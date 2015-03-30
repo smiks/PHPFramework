@@ -1,13 +1,39 @@
 <?php
 
-class Controller {
+class Controller{
 	
 	public $_CSRF_TOKEN;
 
 
+	private function sum($a) {
+		return array_sum(str_split($a));
+	}
+
+	public function generateCSRF() {
+		$ok = false;
+		while(!$ok) {
+			$num = rand(10000000,90000000);
+			if($this->sum($num) % 7 == 0) {
+				$ok = true;
+				$this->_CSRF_TOKEN = $num;
+			}
+		}
+		return $this -> _CSRF_TOKEN;
+	}
+
+	public function checkCSRF($token) {
+		global $_Domain, $_RefererDomain, $_CSRF;
+		$result = $this->sum($token) % 7 == 0 && $_Domain == $_RefererDomain;
+		if($_CSRF && !$result) {
+			echo"CSRF ERROR";
+			exit(1);
+		}
+		return ($result);
+	}
 
 	public function show($view, $data = array()){
-		
+		$CSRF = $this -> _CSRF_TOKEN;
+		$CSRFFORM = "<input type='hidden' name='csrf' value='{$CSRF}'>";
 		foreach ( $data as $key => $value ) {
 			$$key = $value;
 		}
@@ -21,10 +47,23 @@ class Controller {
 				$replace = array(" <?php ", " ?> ", '<?php echo"{$','}"; ?>'); 
 				$content = str_replace($search, $replace, $content);
 
-				$search  = array('@\[(?i)include\](.*?)\[/(?i)include\]@si');
-				$replace = array("<?php if(file_exists('\\1')){include_once('\\1');} ?>");
+				$search  = array(
+					'@\[(?i)include\](.*?)\[/(?i)include\]@si', 
+					'@\@for (.*?) in range\((\w*),(\w*)\)@si', 
+					'@\@for (.*?) in range\((\w*)\)@si', 
+					'@\@for (.*?) in range\((\w*),(\w*),(.*?)\)@si', 					
+					'@\@endfor@si'
+					);
+				$replace = array(
+					"<?php if(file_exists('\\1')){include_once('\\1');} ?>", 
+					"<?php for($\\1=\\2; $\\1 < \\3; $\\1++): ?>", 
+					"<?php for($\\1=0; $\\1 < \\2; $\\1++): ?>", 
+					"<?php for($\\1=\\2; $\\1 < \\3; $\\1 += \\4): ?>",				
+					"<? endfor; ?>"
+					);
 
 				$content = preg_replace($search, $replace, $content);
+				//echo($content);exit();
 				$output = eval("?>$content");
 			}
 			else{

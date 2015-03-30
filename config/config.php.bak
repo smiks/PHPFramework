@@ -1,0 +1,9 @@
+<?php
+$_CONFIG = array(
+'hostname' => '127.0.0.1',
+'username' => 'c3bleach_blch',
+'password' => '5jv2tvi5!"#$',
+'database' => 'c3bleach_dev',
+'persistent' => 0
+);
+?>

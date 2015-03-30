@@ -1,6 +1,6 @@
 <?php
 
-class cache {
+class Cache {
 
 	protected $cache;
 

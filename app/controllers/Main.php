@@ -12,6 +12,8 @@ class Main extends Controller{
 		var_dump($_POST);
 		$this->checkCSRF($_POST['csrf']);
 		$reloadTimer = 5; /* 5 seconds */
+		$allInputData = Functions::input();
+		$postInputData = Functions::input()["POST"];
 		$data = array("reloadTimer" => $reloadTimer);
 		$this->show("base.view.php",$data);
 		Functions::reload("index.php", $reloadTimer);		

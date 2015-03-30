@@ -21,14 +21,17 @@ class Controller{
 		return $this -> _CSRF_TOKEN;
 	}
 
-	public function checkCSRF($token) {
+	public function checkCSRF($token, $forceStop = false) {
 		global $_Domain, $_RefererDomain, $_CSRF;
 		$result = $this->sum($token) % 7 == 0 && $_Domain == $_RefererDomain;
-		if($_CSRF && !$result) {
+		if($_CSRF && !$result && $forceStop) {
 			echo"CSRF ERROR";
 			exit(1);
 		}
-		return ($result);
+		if($_CSRF && !$result && !$forceStop) {
+			return false;
+		}		
+		return true;
 	}
 
 	public function show($view, $data = array()){

@@ -20,12 +20,6 @@ For Loop 3
 	Line: {{i}}<br>
 @endfor
 <br>
-For Loop 4
-<br>
-@for i in range(5,1,-1)
-	Line: {{i}}<br>
-@endfor
-<br>
 Reading from cache: {{cVal}} <br>
 CSRF TOKEN: {{CSRF}} <br>
 <form action='' method='post'>

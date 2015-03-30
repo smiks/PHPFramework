@@ -21,8 +21,7 @@ require_once 'core/Router.php';
 require_once 'core/Functions.php';
 
 /* routing */
-Router::home('Main', 'app/controllers/Main.php');
-Router::make('Main', 'app/controllers/Main.php');
+Router::home('main', 'app/controllers/Main.php');
 Router::make('main', 'app/controllers/Main.php');
 Router::route();
 

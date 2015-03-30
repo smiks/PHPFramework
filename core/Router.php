@@ -11,10 +11,12 @@ class Router {
 	}
 
 	public static function make($pagename, $controller) {
+		$pagename = strtolower($pagename);
 		self::$pages[$pagename] = $controller;
 	}
 
 	public static function home($pagename, $controller) {
+		$pagename = strtolower($pagename);
 		self::$defaultPage = $pagename;
 		self::$defaultController = $controller;
 	}	
@@ -29,7 +31,7 @@ class Router {
 			$pages[$page] = self::$defaultController;
 		}
 		else {
-			$page = $_GET['page'];
+			$page = strtolower($_GET['page']);
 		}
 
 		if($pages[$page] != null || file_exists($pages[$page])) {

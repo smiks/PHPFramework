@@ -9,7 +9,7 @@
 	$_ERROR_REPORT = 1; 
 
 /* Debug mode */
-	$_DEBUG = true;
+	$_DEBUG = false;
 
 /* Allow registration or login */
 	$_ALLOW_LOGIN = true;
@@ -31,8 +31,14 @@
 	$_PrivateKey = "framework";
 
 /* Domain */
-	$_Domain = "c3.bleach-soulsoftime.com";
+	$_http   = "http://"; // or https://
+	$_Domain = "yourdomain.com";
 
+/* static file access */
+	$_images = "/static/images/";
+	$_css    = "/static/css/";
+	$_js     = "/static/js/";
+	
 
 if($_ERROR_REPORT== 1) 
 {

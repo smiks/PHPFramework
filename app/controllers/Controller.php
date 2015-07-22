@@ -37,8 +37,10 @@ class Controller{
 	public function show($view, $data = array()){
 		$CSRF = $this -> _CSRF_TOKEN;
 		$CSRFFORM = "<input type='hidden' name='csrf' value='{$CSRF}'>";
-		foreach ( $data as $key => $value ) {
-			$$key = $value;
+		if(is_array($data)){
+			foreach ( $data as $key => $value ) {
+				$$key = $value;
+			}
 		}
 	
 		// works

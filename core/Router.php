@@ -38,9 +38,13 @@ class Router {
 			$page = strtolower($_GET['page']);
 		}
 
-		if($pages[$page] != null || file_exists($pages[$page])) {
+		if(!is_null($pages[$page]) && file_exists($pages[$page])) {
 			require_once $pages[$page];
 			$$page = new $page;
+			switch($_SERVER['REQUEST_METHOD']){
+				case "GET": $$page->get(); break;
+				case "POST": $$page->post(); break;
+			}
 		}
 		else {
 			$page = urlencode($page);

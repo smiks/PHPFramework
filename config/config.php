@@ -4,6 +4,7 @@ $_CONFIG = array(
 'username' => 'username',
 'password' => 'password',
 'database' => 'databasename',
-'persistent' => 0
+'persistent' => 0,
+'fatalRedirect' => false
 );
 ?>

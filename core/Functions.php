@@ -16,21 +16,6 @@ class Functions {
 		return $outputVal;
 	}
 
-	/* returns date in SQL format yyyy-mm-dd */
-	public static function dateDB(){
-		$day = date('d');
-		$month = date('m');
-		$year  = date('Y');
-
-		$date = $year."-".$month."-".$day;
-
-		return ($date);
-	}
-
-	public static function dateTime(){
-		return (date("H:i, d/M, Y"));
-	}
-
 	/* creates internal link. Example: domain.com/?page.... */
 	public static function internalLink($url){
 		global $_Domain, $_http;
@@ -117,35 +102,4 @@ class Functions {
 		header("refresh:{$time};url={$toUrl}"); 
 	}
 
-	public static function splitText($text, $splitAt)
-	{
-		if(strlen($text) < $splitAt){
-			return ($text);
-		}
-		return self::splitTextHelper($text, $splitAt, "");
-	}
-
-	private static function splitTextHelper($text, $splitAt, $acc)
-	{
-		$textLen = strlen($text);
-		if($textLen > $splitAt){
-			$space = strpos($text, ' ', $splitAt);
-		}
-		else{
-			return $acc.$text;
-		}
-		
-		if($textLen > $splitAt && $space > 0){
-			$partA  = substr($text, 0, $space);
-			$partB .= substr($text, $space);
-			$partA  = $partA."<br>";
-			$acc    = $acc.$partA;
-			return self::splitTextHelper($partB, $splitAt, $acc);
-		}
-		if($textLen > $splitAt && $space == 0){
-			$text  = substr($text, 0, $splitAt);
-			$text .= "...";
-			return ($text);
-		}
-	}
 }

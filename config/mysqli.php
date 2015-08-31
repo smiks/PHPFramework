@@ -21,12 +21,14 @@ class database {
   var $connection_id;
   var $num_queries=0;
   var $start_time;
-  function configure($host, $user, $pass, $database, $persistent=0)
+  var $fatalRedirect;
+  function configure($host, $user, $pass, $database, $persistent=0, $fatalRedirect = false)
   {
     $this->host=$host;
     $this->user=$user;
     $this->pass=$pass;
     $this->database=$database;
+    $this->fatalRedirect=$fatalRedirect;
     return 1; //Success.
   }
   function connect()
@@ -70,7 +72,12 @@ class database {
   }
   function connection_error()
   {
-    die("<b>FATAL ERROR:</b> Could not connect to database on {$this->host} (".mysqli_connect_error().")");
+    if($this->fatalRedirect){
+      header("../error/connection.html");
+    }
+    else{
+      die("<b>FATAL ERROR:</b> Could not connect to database on {$this->host} (".mysqli_connect_error().")");
+    }
   }
   function query_error()
   {

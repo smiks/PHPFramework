@@ -23,7 +23,8 @@ class Controller{
 
 	public function checkCSRF($token, $forceStop = false) {
 		global $_Domain, $_RefererDomain, $_CSRF;
-		$result = $this->sum($token) % 7 == 0 && $_Domain == $_RefererDomain;
+		$sumToken = $this->sum($token);
+		$result = $sumToken % 7 == 0 && $_Domain == $_RefererDomain && $sumToken > 0;
 		if($_CSRF && !$result && $forceStop) {
 			echo"CSRF ERROR";
 			exit(1);

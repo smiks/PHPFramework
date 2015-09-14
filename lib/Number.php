@@ -1,6 +1,6 @@
 <?php
 
-class Numbers {
+class Number {
 
 	public function __construct(){
 	}
@@ -31,9 +31,6 @@ class Numbers {
 
 	public static function limitDecimal($number, $decimals)
 	{
-		$shift   = pow(10, $decimals);
-		$number *= $shift; 
-		$number  = (int)($number);
-		return ($number/$shift);
+		return (number_format($number, $decimals));
 	}
 }

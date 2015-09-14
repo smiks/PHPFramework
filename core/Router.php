@@ -29,13 +29,12 @@ class Router {
 	public static function route() {
 		$pages = self::$pages;
 		/* pages are routed using $_GET['page'] */
-		if (!isset($_GET["page"])){
-			$_GET["page"] = "";
-			$page = self::$defaultPage;
-			$pages[$page] = self::$defaultController;
+		if (isset($_GET["page"])){
+			$page = strtolower($_GET["page"]);
 		}
 		else {
-			$page = strtolower($_GET['page']);
+			$page = self::$defaultPage;
+			$pages[$page] = self::$defaultController;
 		}
 
 		if(!is_null($pages[$page]) && file_exists($pages[$page])) {

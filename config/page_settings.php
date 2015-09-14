@@ -1,7 +1,5 @@
 <?php
 
-/* TODO :: make page_settings more useful. Add (probably) cache registers */
-
 /* Error Report Settings  */
 	/* 0 - no report          */
 	/* 1 - warnings only      */
@@ -16,8 +14,9 @@
 	$_ALLOW_REGISTRATION = true;
 
 /* Page statistics */
-	$_PAGE_LOAD_TIME = false;
-	$_NUM_QUERIES = false;
+	$_PAGE_LOAD_TIME = true;
+	$_NUM_QUERIES = true;
+	$_MEMORY_USAGE = true;
 
 
 /* Toggle CSRF token */
@@ -28,11 +27,11 @@
 	$_RefererDomain = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST); /* get domain from $_SERVER['HTTP_REFERER'] */
 
 /* Private Key */
-	$_PrivateKey = "framework";
+	$_PrivateKey = "mysecret";
 
 /* Domain */
 	$_http   = "http://"; // or https://
-	$_Domain = "yourdomain.com";
+	$_Domain = "domai.com";
 
 /* static file access */
 	$_images = "/static/images/";

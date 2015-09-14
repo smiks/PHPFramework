@@ -1,9 +1,7 @@
 <?php
 
-
 class Model {
 
-	private $table;
 	private $_sql;
 	private $usedOrAnd;
 
@@ -41,14 +39,27 @@ class Model {
 
 	}
 
-	public function orm(){
-		$this->_sql = "SELECT <select> FROM <from>";
+	public function orm($query){
+		$query = strtolower($query);
+		if($query == "select"){
+			$this->_sql = "SELECT <select> FROM `<table>` ";
+		}
+		elseif($query == "insert"){
+			$this->_sql = "INSERT INTO `<table>` (<insertfields>) VALUES (<insertvalues>) ";
+		}
+		elseif($query == "update"){
+			$this->_sql = "UPDATE `<table>` SET <set> ";
+		}
+		elseif($query == "remove"){
+			$this->_sql = "DELETE FROM `<table>` ";
+		}
+
 		return $this;
 	}
 
 	public function table($table){
 		$sl = $this->_sql;
-		$sl = str_replace("<from>", $table, $sl);
+		$sl = str_replace("<table>", $table, $sl);
 		$this->_sql = $sl;
 		return $this;
 	}
@@ -60,14 +71,57 @@ class Model {
 		return $this;
 	}
 
+	public function selectAll(){
+		$sl = $this->_sql;
+		$sl = str_replace("<select>", "*", $sl);
+		$this->_sql = $sl;
+		return $this;
+	}
+
+	public function count($count){
+		$sl = $this->_sql;
+		$sl = str_replace("<select>", "COUNT({$count})", $sl);
+		$this->_sql = $sl;
+		return $this;
+	}
+
+	public function insert($data){
+		$tmpInsert = "";
+		$tmpValues = "";
+		foreach ($data as $key => $value) {
+			$tmpInsert .= $key.", ";
+			$tmpValues .= "'".$value."', ";
+		}
+		$tmpInsert = rtrim($tmpInsert, ", ");
+		$tmpValues = rtrim($tmpValues, ", ");
+		$sl = $this->_sql;
+		$sl = str_replace("<insertfields>", $tmpInsert, $sl);
+		$sl = str_replace("<insertvalues>", $tmpValues, $sl);
+		$this->_sql = $sl;
+		return $this;
+	}
+
+	public function update($data){
+		$tmpSet = "";
+		foreach ($data as $key => $value) {
+			$tmpSet .= "`".$key."` = '".$value."', ";
+		}
+		$tmpSet = rtrim($tmpSet, ", ");
+		$sl = $this->_sql;
+		$sl = str_replace("<set>", $tmpSet, $sl);
+		$this->_sql = $sl;
+		return $this;
+
+	}
+
 	public function where($what, $op, $toWhat){
 		$sl = $this->_sql;
-		$sl .= "<where>";
+		$sl .= " <where> ";
 		if($this->usedOrAnd){
-			$sentence = " {$what} {$op} '{$toWhat}' ";
+			$sentence = "`".$what."`".$op."'".$toWhat."' ";
 		}
 		else{
-			$sentence = " WHERE {$what} {$op} '{$toWhat}' ";	
+			$sentence = "WHERE `".$what."`".$op."'".$toWhat."' ";	
 		}
 		
 		$sl = str_replace("<where>", $sentence, $sl);
@@ -77,12 +131,12 @@ class Model {
 
 	public function whereAnd($what, $op, $toWhat){
 		$sl = $this->_sql;
-		$sl .= "<where>";
+		$sl .= " <where> ";
 				if($this->usedOrAnd){
-			$sentence = " {$what} {$op} '{$toWhat}' AND ";
+			$sentence = "`".$what."`".$op."'".$toWhat."' AND ";
 		}
 		else{
-			$sentence = " WHERE {$what} {$op} '{$toWhat}' AND ";	
+			$sentence = "WHERE `".$what."`".$op."'".$toWhat."' AND ";	
 		}
 		$sl = str_replace("<where>", $sentence, $sl);
 		$this->_sql = $sl;
@@ -92,14 +146,14 @@ class Model {
 
 	public function whereOr($what, $op, $toWhat){
 		$sl = $this->_sql;
-		$sl .= "<where>";
+		$sl .= " <where> ";
 				if($this->usedOrAnd){
-			$sentence = " {$what} {$op} '{$toWhat}' OR ";
+			$sentence = "`".$what."`".$op."'".$toWhat."' OR ";
 		}
 		else{
-			$sentence = " WHERE {$what} {$op} '{$toWhat}' OR ";	
+			$sentence = "WHERE `".$what."`".$op."'".$toWhat."' OR ";
 		}
-		$sl = str_replace("<where>", $sentence, $sl);
+		$sl = str_replace(" <where> ", $sentence, $sl);
 		$this->_sql = $sl;
 		$this->usedOrAnd = true;
 		return $this;
@@ -112,10 +166,24 @@ class Model {
 		$sl = str_replace("<limit>", $sentence, $sl);
 		$this->_sql = $sl;
 		return $this;
-	}	
+	}
+
+	public function sqlRaw($sql){
+		$this->_sql = $sql;
+		return $this;
+	}
 
 	public function toSql(){
-		return $this->_sql;
+		$sl = $this->_sql;
+		$sl .= ";";
+		return $sl;
+	}
+
+	public function commit(){
+		global $db;
+		$sl = $this->_sql;
+		$sl .= ";";
+		$db->query($sl);
 	}
 
 	public function fetchRow(){
@@ -134,6 +202,11 @@ class Model {
 		$q  = $db -> query($sl);
 		$data = $db -> fetch_single($q);
 		return ($data);
+	}
+
+	public function execute($sql){
+		global $db;
+		$db -> query($sql);
 	}
 
 	public function __construct() {

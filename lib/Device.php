@@ -40,6 +40,8 @@ class Device {
 		/* step 2 */
 		$pattern = "/(Android|Mobile|iPhone|iPad|(Windows Phone)|BlackBerry|(Opera Mini)|symbian)/i";
 		if(preg_match($pattern, $browser)){
+			if($save)
+					$_SESSION['mobile'] = true;
 			return true;
 		}
 

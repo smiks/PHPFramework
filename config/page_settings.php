@@ -50,6 +50,9 @@
 				$_PrivateKey .= "Z";
 			}
 		}
+		elseif($PKL > 32){
+			$_PrivateKey = md5($_PrivateKey);
+		}
 	}
 
 /* Domain */

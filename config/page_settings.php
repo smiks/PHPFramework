@@ -29,6 +29,29 @@
 /* Private Key */
 	$_PrivateKey = "mysecret";
 
+	/* auto-padding if incorrect length */
+	$PKL = strlen($_PrivateKey);
+	if($PKL != 16 && $PKL != 24 && $PKL != 32){
+		if($PKL < 16){
+			$diff = 16 - $PKL;
+			for($i=0; $i<$diff;$i++){
+				$_PrivateKey .= "X";
+			}
+		}
+		elseif($PKL < 24){
+			$diff = 24 - $PKL;
+			for($i=0; $i<$diff;$i++){
+				$_PrivateKey .= "Y";
+			}
+		}
+		elseif($PKL < 32){
+			$diff = 32 - $PKL;
+			for($i=0; $i<$diff;$i++){
+				$_PrivateKey .= "Z";
+			}
+		}
+	}
+
 /* Domain */
 	$_http   = "http://"; // or https://
 	$_Domain = "domai.com";

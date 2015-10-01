@@ -64,4 +64,60 @@ class Time {
 		}
 	}
 
+	/* works in combination with date format yyyy-mm-dd */
+	public static function yesterday($date)
+	{
+		$da = explode("-", $date);
+		$y = $da[0];
+		$m = $da[1];
+		$d = $da[2];
+
+		/* if not first of the month, return only one day less*/
+		if($d > 1){
+			return($y."-".$m."-".($d-1));
+		}
+		
+		/* check how many days has previous month */
+		switch($m){
+			case "01": $pd = 31; break;
+			case "02": $pd = 28; break;
+			case "03": $pd = 31; break;
+			case "04": $pd = 31; break;
+			case "05": $pd = 30; break;
+			case "06": $pd = 31; break;
+			case "07": $pd = 30; break;
+			case "08": $pd = 31; break;
+			case "09": $pd = 31; break;
+			case "10": $pd = 30; break;
+			case "11": $pd = 31; break;
+			case "12": $pd = 30; break;
+		}
+		if(is_leap_year($y) && $m == "03"){
+			$pd += 1;
+		}
+
+		/* check for previous month */
+		switch($m){
+			case "01": $pm = "12"; break;
+			case "02": $pm = "01"; break;
+			case "03": $pm = "02"; break;
+			case "04": $pm = "03"; break;
+			case "05": $pm = "04"; break;
+			case "06": $pm = "05"; break;
+			case "07": $pm = "06"; break;
+			case "08": $pm = "07"; break;
+			case "09": $pm = "08"; break;
+			case "10": $pm = "09"; break;
+			case "11": $pm = "10"; break;
+			case "12": $pm = "11"; break;
+		}
+
+		/* check if it is 1st January to lower year */
+		if($m == "01" && $d = "01"){
+			$y -= 1;
+		}
+
+		return($y."-".$pm."-".($pd));
+	}
+
 }

@@ -14,9 +14,9 @@
 	$_ALLOW_REGISTRATION = true;
 
 /* Page statistics */
-	$_PAGE_LOAD_TIME = true;
-	$_NUM_QUERIES = true;
-	$_MEMORY_USAGE = true;
+	$_PAGE_LOAD_TIME = false;
+	$_NUM_QUERIES = false;
+	$_MEMORY_USAGE = false;
 
 
 /* Toggle CSRF token */
@@ -27,7 +27,7 @@
 	$_RefererDomain = parse_url($_SERVER['HTTP_REFERER'], PHP_URL_HOST); /* get domain from $_SERVER['HTTP_REFERER'] */
 
 /* Private Key */
-	$_PrivateKey = "mysecret";
+	$_PrivateKey = "yourVeryOwnPrivateKey";
 
 	/* auto-padding if incorrect length */
 	$PKL = strlen($_PrivateKey);
@@ -57,7 +57,7 @@
 
 /* Domain */
 	$_http   = "http://"; // or https://
-	$_Domain = "domai.com";
+	$_Domain = "yourOwnLink.net";
 
 /* static file access */
 	$_images = "/static/images/";

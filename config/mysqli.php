@@ -81,7 +81,7 @@ class database {
   }
   function query_error()
   {
-    die("<b>QUERY ERROR:</b> ".mysqli_error()."<br />
+    die("<b>QUERY ERROR:</b> ".mysqli_error($this->connection_id)."<br />
     Query was {$this->last_query}");
   }
   function fetch_single($result=0)

@@ -40,6 +40,7 @@ class Model {
 	}
 
 	public function orm($query){
+		$this->usedOrAnd = false;
 		$query = strtolower($query);
 		if($query == "select"){
 			$this->_sql = "SELECT <select> FROM `<table>` ";
@@ -132,7 +133,7 @@ class Model {
 	public function whereAnd($what, $op, $toWhat){
 		$sl = $this->_sql;
 		$sl .= " <where> ";
-				if($this->usedOrAnd){
+		if($this->usedOrAnd){
 			$sentence = "`".$what."`".$op."'".$toWhat."' AND ";
 		}
 		else{
@@ -147,7 +148,7 @@ class Model {
 	public function whereOr($what, $op, $toWhat){
 		$sl = $this->_sql;
 		$sl .= " <where> ";
-				if($this->usedOrAnd){
+		if($this->usedOrAnd){
 			$sentence = "`".$what."`".$op."'".$toWhat."' OR ";
 		}
 		else{
@@ -167,6 +168,15 @@ class Model {
 		$this->_sql = $sl;
 		return $this;
 	}
+
+	public function order($orderby, $direction){
+		$sl = $this->_sql;
+		$sl .= "<orderBy>";
+		$sentence = " ORDER BY {$orderby} {$direction} ";
+		$sl = str_replace("<orderBy>", $sentence, $sl);
+		$this->_sql = $sl;
+		return $this;
+	}	
 
 	public function sqlRaw($sql){
 		$this->_sql = $sql;
@@ -193,6 +203,18 @@ class Model {
 		$q  = $db -> query($sl);
 		$data = $db -> fetch_row($q);
 		return ($data);
+	}
+
+	public function fetchArray(){
+		global $db;
+		$sl = $this->_sql;
+		$sl .= ";";
+		$q  = $db -> query($sl);
+		$ret = [];
+		while($data = $db -> fetch_row($q)){
+			array_push($ret, $data);
+		}
+		return ($ret);
 	}
 
 	public function fetchSingle(){

@@ -1,10 +1,10 @@
 <?php
 $_CONFIG = array(
-'hostname' => 'hostname',
-'username' => 'username',
-'password' => 'password',
-'database' => 'databasename',
+'hostname' => '127.0.0.1',
+'username' => 'user',
+'password' => 'pwd',
+'database' => 'db',
 'persistent' => 0,
-'fatalRedirect' => false
+'fatalRedirect' => True
 );
 ?>

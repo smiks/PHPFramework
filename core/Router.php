@@ -47,7 +47,7 @@ class Router {
 		}
 		else {
 			$page = urlencode($page);
-			header("Location: ../error/404.php?page=$page");
+			header("Location: /error/404.php?page=$page");
 		}
 	}
 }

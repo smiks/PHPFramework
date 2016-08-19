@@ -72,6 +72,17 @@ class Controller{
 	}
 
 	public function render($view, $data = array()){
+
+		$file = "app/views/".$view;
+
+		if(!file_exists($file)){
+			echo "View [{$view}] not found!";
+			ob_end_flush();
+			return;
+		}
+
+		$cache = "cache/views/".filemtime($file).$view;
+
 		$CSRF = $this -> _CSRF_TOKEN;
 		$CSRFFORM = "<input type='hidden' name='csrf' value='{$CSRF}'>";
 		if(is_array($data)){
@@ -86,33 +97,28 @@ class Controller{
 		else{
 			ob_start();
 		}
-			$file = "app/views/".$view;
-			$cache = "cache/views/".filemtime($file).$view;
-			if(file_exists($file)){
-				if(file_exists($cache)){
-					$content = file_get_contents($cache);
-				}
-				else{
-					$content = file_get_contents($file);
-					$search  = array("{%", "%}", "{{", "}}");
-					$replace = array(" <?php ", " ?> ", '<?php echo"{$','}"; ?>'); 
-					$content = str_replace($search, $replace, $content);
-					$search  = array(
-						'@\[(?i)include\](.*?)\[/(?i)include\]@si', 
-						);
-					$replace = array(
-						"<?php if(file_exists('\\1')){include_once('\\1');} ?>", 
-						);
-					$content = preg_replace($search, $replace, $content);
-					file_put_contents($cache, $content);
 
-				}
-				$output = eval("?>$content");
-			}
-			else{
-				echo "File [{$file}] not found!";
-			}
-			$output = ob_get_contents();
+		if(file_exists($cache)){
+			$content = file_get_contents($cache);
+		}
+		else{
+			$content = file_get_contents($file);
+			$search  = array("{%", "%}", "{{", "}}", "\n", "  ", "\t", "	");
+			$replace = array(" <?php ", " ?> ", '<?php echo"{$','}"; ?>', "", " ", "",""); 
+			$content = str_replace($search, $replace, $content);
+			$search  = array(
+				'@\[(?i)include\](.*?)\[/(?i)include\]@si', 
+				);
+			$replace = array(
+				"<?php if(file_exists('\\1')){include_once('\\1');} ?>", 
+				);
+			$content = preg_replace($search, $replace, $content);
+			file_put_contents($cache, $content);
+
+		}
+		$output = eval("?>$content");
+
+		$output = ob_get_contents();
 
 		ob_end_flush();
 	}	

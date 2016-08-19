@@ -1,12 +1,15 @@
 <?php
 /*  author: smiks
-    version: 0.8.2
+    version: 0.8.3
+    latest minor upgrade:
+    - rewrote function render in Controller.php
+
     latest bigger upgrades: 
     - gzip compression (auto detect if broswer supports it)
     - function render in controller (caches view)
 */
 session_start();
-#ob_start();
+
 header("Cache-Control: max-age=86400");
 require_once 'config/page_settings.php';
 require_once 'config/config.php';
@@ -20,9 +23,9 @@ if($_PAGE_LOAD_TIME){
 }
 
 /* routing */
-Router::home('main', 'app/controllers/Main.php');
+Router::home('home', 'app/controllers/Home.php');
 Router::set(array(
-    'demo' => 'app/controllers/Demo.php',
+    'home' => 'app/controllers/Home.php',
     ));
 Router::route();
 

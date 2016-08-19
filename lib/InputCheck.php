@@ -30,4 +30,12 @@ class InputCheck {
 		return strlen($input) >= $requirement;
 	}
 
+
+	public static function same($input1, $input2){
+		if(gettype($input1) == gettype($input2) && $input1 == $input2)
+			return true;
+		return false;
+	}
+
+
 }

@@ -60,7 +60,7 @@ class Functions {
 	}
 		
 	/* Function generates hash of given plain text (one way hash function) */
-	public static function hashing($plainText, $salt="A!$%csa132_-s", $numIterations=10000)
+	public static function hashing($plainText, $salt="SA!$%csa132_-s", $numIterations=10000)
 	{
 		$i = 1;
 		$hash = hash('haval256,3', $plainText.$salt, false);

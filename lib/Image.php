@@ -18,6 +18,8 @@ class Image {
 
 			case "image/png":
 				$image = imagecreatefrompng($source);
+				imageAlphaBlending($image, true);
+				imageSaveAlpha($image, true);
 			break;
 
 			default: throw new Exception("IMAGE_MIMETYPE_NOTSUPPORTED"); break;
@@ -64,7 +66,7 @@ class Image {
 			}
 		}
 
-		$source = $imagecreatefromjpeg($image);
+		$source = imagecreatefromjpeg($image);
 		$destination = imagecreatetruecolor($newwidth, $newheight);
 
 		imagecopyresampled($destination, $source, 0, 0, 0, 0, $newwidth, $newheight, $width, $height);

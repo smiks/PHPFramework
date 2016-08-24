@@ -5,8 +5,8 @@ class Image {
 	public function __construct(){
 	}
 
-	public function compress($source, $destination, $quality=80, $returnFormat="jpeg"){
-		$info = $getimagesize($source);
+	public static function compress($source, $destination, $quality=80, $returnFormat="jpeg"){
+		$info = getimagesize($source);
 		switch($info['mime']){
 			case "image/gif":
 				$image = imagecreatefromgif($source);
@@ -39,7 +39,7 @@ class Image {
 	}
 
 
-	public function resize($image, $width, $height, $crop=false){
+	public static function resize($image, $width, $height, $crop=false){
 		list($width, $height) = getimagesize($image);
 		$ratio = $width / $height;
 		if($crop){

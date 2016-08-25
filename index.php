@@ -1,7 +1,8 @@
 <?php
 /*  author: smiks
-    version: 0.8.3
+    version: 0.8.5
     latest minor upgrade:
+    - better routing error information
     - rewrote function render in Controller.php
 
     latest bigger upgrades: 

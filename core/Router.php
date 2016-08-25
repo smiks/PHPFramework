@@ -37,8 +37,19 @@ class Router {
 			$pages[$page] = self::$defaultController;
 		}
 
+		if(!file_exists($pages[$page])){
+			$cont = strtoupper($page[0]).substr($page, 1);
+			echo"File [{$pages[$page]}] is not found.";
+			return;
+		}
+
 		if(!is_null($pages[$page]) && file_exists($pages[$page])) {
 			require_once $pages[$page];
+			if(!class_exists($page)){
+				$cont = strtoupper($page[0]).substr($page, 1);
+				echo"Class [{$page}] is not found in controller {$cont}.php";
+				return;
+			}
 			$$page = new $page;
 			switch($_SERVER['REQUEST_METHOD']){
 				case "GET": $$page->get(); break;
